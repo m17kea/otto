@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <Servo.h>
+#include <Otto.h>
 
 constexpr uint8_t SERVO_LEFT_HIP_PIN = 2;
 constexpr uint8_t SERVO_RIGHT_HIP_PIN = 3;
@@ -9,10 +9,15 @@ constexpr uint8_t ULTRASONIC_TRIG_PIN = 8;
 constexpr uint8_t ULTRASONIC_ECHO_PIN = 9;
 constexpr uint8_t BUZZER_PIN = 12;
 
-Servo servoLeftHip;
-Servo servoRightHip;
-Servo servoLeftFoot;
-Servo servoRightFoot;
+constexpr int TRIM_LEFT_HIP = 0;
+constexpr int TRIM_RIGHT_HIP = 0;
+constexpr int TRIM_LEFT_FOOT = 0;
+constexpr int TRIM_RIGHT_FOOT = 0;
+
+constexpr long OBSTACLE_STOP_CM = 15;
+constexpr unsigned long MOVE_INTERVAL_MS = 1600;
+
+Otto otto;
 
 long readUltrasonicCm() {
   digitalWrite(ULTRASONIC_TRIG_PIN, LOW);
@@ -28,40 +33,52 @@ long readUltrasonicCm() {
   return duration / 58;
 }
 
+void applyServoTrims() {
+  otto.setTrims(TRIM_LEFT_HIP, TRIM_RIGHT_HIP, TRIM_LEFT_FOOT, TRIM_RIGHT_FOOT);
+}
+
+void neutralPose() {
+  otto.home();
+}
+
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(ULTRASONIC_TRIG_PIN, OUTPUT);
   pinMode(ULTRASONIC_ECHO_PIN, INPUT);
-  pinMode(BUZZER_PIN, OUTPUT);
-  digitalWrite(BUZZER_PIN, LOW);
-
-  servoLeftHip.attach(SERVO_LEFT_HIP_PIN);
-  servoRightHip.attach(SERVO_RIGHT_HIP_PIN);
-  servoLeftFoot.attach(SERVO_LEFT_FOOT_PIN);
-  servoRightFoot.attach(SERVO_RIGHT_FOOT_PIN);
-
-  servoLeftHip.write(90);
-  servoRightHip.write(90);
-  servoLeftFoot.write(90);
-  servoRightFoot.write(90);
 
   Serial.begin(115200);
   delay(200);
+
+  otto.init(SERVO_LEFT_HIP_PIN, SERVO_RIGHT_HIP_PIN, SERVO_LEFT_FOOT_PIN,
+            SERVO_RIGHT_FOOT_PIN, false, BUZZER_PIN);
+  applyServoTrims();
+  neutralPose();
+  otto.sing(S_connection);
+
   Serial.println("Otto robot starting...");
 }
 
 void loop() {
-  static unsigned long lastLogMs = 0;
+  static unsigned long lastMoveMs = 0;
+
+  if (millis() - lastMoveMs < MOVE_INTERVAL_MS) {
+    return;
+  }
+  lastMoveMs = millis();
+
+  long distance = readUltrasonicCm();
+  Serial.print("Ultrasonic (cm): ");
+  Serial.println(distance);
+
+  if (distance > 0 && distance < OBSTACLE_STOP_CM) {
+    digitalWrite(LED_BUILTIN, HIGH);
+    otto.sing(S_surprise);
+    otto.turn(1, 900, RIGHT);
+    digitalWrite(LED_BUILTIN, LOW);
+    return;
+  }
 
   digitalWrite(LED_BUILTIN, HIGH);
-  delay(250);
+  otto.walk(1, 900, FORWARD);
   digitalWrite(LED_BUILTIN, LOW);
-  delay(250);
-
-  if (millis() - lastLogMs >= 1000) {
-    lastLogMs = millis();
-    long distance = readUltrasonicCm();
-    Serial.print("Ultrasonic (cm): ");
-    Serial.println(distance);
-  }
 }
