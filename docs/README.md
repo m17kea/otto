@@ -15,3 +15,8 @@ Notes, calibration steps, and build logs for the Otto DIY robot.
 - D9: ultrasonic echo
 - D12: buzzer
 - D13: status LED (on-board)
+
+## Calibration
+- Adjust `TRIM_*` constants in `src/main.cpp` or `arduino/otto.ino` until neutral pose is level.
+- Positive values push the servo angle higher, negative values lower.
+- After trimming, power-cycle to confirm the neutral pose looks stable.

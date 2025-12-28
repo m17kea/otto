@@ -15,6 +15,10 @@ Code and notes for building and programming the Otto DIY robot.
    - `pio run`
    - `pio run -t upload`
 
+## Libraries
+- PlatformIO pulls the OttoDIY library via `lib_deps` in `platformio.ini`.
+- Arduino IDE: install `OttoDIYLib` from Library Manager or from https://github.com/OttoDIY/OttoDIYLib
+
 ## Build with Arduino IDE
 1. Open `arduino/otto.ino` in Arduino IDE.
 2. Select the correct board and port.
