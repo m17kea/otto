@@ -12,7 +12,7 @@ const int LEFT_FOOT_PIN = 4;
 const int RIGHT_FOOT_PIN = 5;
 const int BUZZER_PIN = 12;
 
-Otto otto;
+Otto ottoBot;
 
 int trimLeftLeg;
 int trimRightLeg;
@@ -21,13 +21,13 @@ int trimRightFoot;
 
 void calibHome() {
   int servoPos[4] = {90, 90, 90, 90};
-  otto._moveServos(500, servoPos);
-  otto.detachServos();
+  ottoBot._moveServos(500, servoPos);
+  ottoBot.detachServos();
 }
 
 void applyTrims() {
-  otto.setTrims(trimLeftLeg, trimRightLeg, trimLeftFoot, trimRightFoot);
-  otto.saveTrimsOnEEPROM();
+  ottoBot.setTrims(trimLeftLeg, trimRightLeg, trimLeftFoot, trimRightFoot);
+  ottoBot.saveTrimsOnEEPROM();
 }
 
 void printTrims() {
@@ -44,8 +44,8 @@ void printTrims() {
 void setup() {
   Serial.begin(9600);
 
-  otto.init(LEFT_LEG_PIN, RIGHT_LEG_PIN, LEFT_FOOT_PIN, RIGHT_FOOT_PIN, true,
-            BUZZER_PIN);
+  ottoBot.init(LEFT_LEG_PIN, RIGHT_LEG_PIN, LEFT_FOOT_PIN, RIGHT_FOOT_PIN, true,
+               BUZZER_PIN);
 
   trimLeftLeg = EEPROM.read(0);
   if (trimLeftLeg > 128) trimLeftLeg -= 256;
@@ -94,10 +94,10 @@ void loop() {
   } else if (charRead == 'n') {
     trimRightFoot--;
   } else if (charRead == 'f') {
-    otto.walk(1, 1000, 1);
+    ottoBot.walk(1, 1000, 1);
     return;
   } else if (charRead == 'h') {
-    otto.home();
+    ottoBot.home();
     return;
   } else if (charRead == 'p') {
     printTrims();
