@@ -6,6 +6,16 @@ Thumbs.db
 .vscode/
 .idea/
 
+# PlatformIO
+.pio/
+.pioenvs/
+.piolibdeps/
+
+# Arduino build artifacts
+*.elf
+*.hex
+*.map
+
 # Build output
 build/
 dist/
