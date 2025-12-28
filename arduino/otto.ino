@@ -8,15 +8,17 @@ constexpr uint8_t ULTRASONIC_TRIG_PIN = 8;
 constexpr uint8_t ULTRASONIC_ECHO_PIN = 9;
 constexpr uint8_t BUZZER_PIN = 12;
 
-constexpr int TRIM_LEFT_HIP = 0;
-constexpr int TRIM_RIGHT_HIP = 0;
+constexpr int TRIM_LEFT_HIP = 18;
+constexpr int TRIM_RIGHT_HIP = -23;
 constexpr int TRIM_LEFT_FOOT = 0;
-constexpr int TRIM_RIGHT_FOOT = 0;
+constexpr int TRIM_RIGHT_FOOT = -10;
 
 constexpr long OBSTACLE_STOP_CM = 15;
 constexpr unsigned long MOVE_INTERVAL_MS = 1600;
 
-Otto otto;
+Otto ottoBot;
+bool avoiding = false;
+int avoidDir = RIGHT;
 
 long readUltrasonicCm() {
   digitalWrite(ULTRASONIC_TRIG_PIN, LOW);
@@ -33,11 +35,12 @@ long readUltrasonicCm() {
 }
 
 void applyServoTrims() {
-  otto.setTrims(TRIM_LEFT_HIP, TRIM_RIGHT_HIP, TRIM_LEFT_FOOT, TRIM_RIGHT_FOOT);
+  ottoBot.setTrims(TRIM_LEFT_HIP, TRIM_RIGHT_HIP, TRIM_LEFT_FOOT,
+                   TRIM_RIGHT_FOOT);
 }
 
 void neutralPose() {
-  otto.home();
+  ottoBot.home();
 }
 
 void setup() {
@@ -47,12 +50,13 @@ void setup() {
 
   Serial.begin(115200);
   delay(200);
+  randomSeed(analogRead(A0));
 
-  otto.init(SERVO_LEFT_HIP_PIN, SERVO_RIGHT_HIP_PIN, SERVO_LEFT_FOOT_PIN,
-            SERVO_RIGHT_FOOT_PIN, false, BUZZER_PIN);
+  ottoBot.init(SERVO_LEFT_HIP_PIN, SERVO_RIGHT_HIP_PIN, SERVO_LEFT_FOOT_PIN,
+               SERVO_RIGHT_FOOT_PIN, false, BUZZER_PIN);
   applyServoTrims();
   neutralPose();
-  otto.sing(S_connection);
+  ottoBot.sing(S_connection);
 
   Serial.println("Otto robot starting...");
 }
@@ -70,14 +74,23 @@ void loop() {
   Serial.println(distance);
 
   if (distance > 0 && distance < OBSTACLE_STOP_CM) {
-    digitalWrite(LED_BUILTIN, HIGH);
-    otto.sing(S_surprise);
-    otto.turn(1, 900, RIGHT);
-    digitalWrite(LED_BUILTIN, LOW);
+    if (!avoiding) {
+      avoiding = true;
+      avoidDir = (random(0, 2) == 0) ? LEFT : RIGHT;
+      digitalWrite(LED_BUILTIN, HIGH);
+      ottoBot.sing(S_surprise);
+      ottoBot.walk(1, 700, BACKWARD);
+    }
+    ottoBot.turn(2, 1200, avoidDir);
     return;
   }
 
+  if (avoiding) {
+    avoiding = false;
+    digitalWrite(LED_BUILTIN, LOW);
+  }
+
   digitalWrite(LED_BUILTIN, HIGH);
-  otto.walk(1, 900, FORWARD);
+  ottoBot.walk(1, 900, FORWARD);
   digitalWrite(LED_BUILTIN, LOW);
 }

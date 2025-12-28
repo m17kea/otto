@@ -32,6 +32,28 @@ Steps:
 6. Press `p` to print the current trims.
 7. The sketch saves trims in EEPROM after each change.
 
+### Run without Arduino IDE (PlatformIO CLI)
+Prereqs:
+- Install PlatformIO CLI (for example, `brew install platformio`).
+- On macOS with CH340-based Nano clones, install the WCH driver:
+  `brew install --cask wch-ch34x-usb-serial-driver`
+  Then allow it in System Settings -> General -> Login Items & Extensions ->
+  Driver Extensions, and reboot.
+
+1. Plug in the Nano and note its serial port (for example, `/dev/tty.usbserial-*`).
+2. Upload the calibration sketch:
+   `pio run -e nano_calibrate -t upload --upload-port <PORT>`
+   If you see sync errors, try the new bootloader env:
+   `pio run -e nano_calibrate_new -t upload --upload-port <PORT>`
+3. Open a serial monitor at 9600:
+   `pio device monitor -b 9600 -p <PORT>`
+4. Use the keys printed in the sketch to adjust trims and press `p` to print.
+
+Troubleshooting:
+- Close any serial monitor before uploading; open ports can cause sync errors.
+- Garbled serial output means the baud rate is wrong (calibration uses 9600).
+- CH340 ports usually show up as `/dev/cu.wchusbserial*` on macOS.
+
 After calibration:
 - To use EEPROM trims in this repo, set `load_calibration` to `true` in
   `otto.init(...)` inside `src/main.cpp` or `arduino/otto.ino`.
