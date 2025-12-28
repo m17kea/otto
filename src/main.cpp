@@ -18,8 +18,6 @@ constexpr long OBSTACLE_STOP_CM = 15;
 constexpr unsigned long MOVE_INTERVAL_MS = 1600;
 
 Otto ottoBot;
-bool avoiding = false;
-int avoidDir = RIGHT;
 
 long readUltrasonicCm() {
   digitalWrite(ULTRASONIC_TRIG_PIN, LOW);
@@ -51,7 +49,6 @@ void setup() {
 
   Serial.begin(115200);
   delay(200);
-  randomSeed(analogRead(A0));
 
   ottoBot.init(SERVO_LEFT_HIP_PIN, SERVO_RIGHT_HIP_PIN, SERVO_LEFT_FOOT_PIN,
                SERVO_RIGHT_FOOT_PIN, false, BUZZER_PIN);
@@ -75,20 +72,11 @@ void loop() {
   Serial.println(distance);
 
   if (distance > 0 && distance < OBSTACLE_STOP_CM) {
-    if (!avoiding) {
-      avoiding = true;
-      avoidDir = (random(0, 2) == 0) ? LEFT : RIGHT;
-      digitalWrite(LED_BUILTIN, HIGH);
-      ottoBot.sing(S_surprise);
-      ottoBot.walk(1, 700, BACKWARD);
-    }
-    ottoBot.turn(2, 1200, avoidDir);
-    return;
-  }
-
-  if (avoiding) {
-    avoiding = false;
+    digitalWrite(LED_BUILTIN, HIGH);
+    ottoBot.sing(S_surprise);
+    ottoBot.turn(1, 900, RIGHT);
     digitalWrite(LED_BUILTIN, LOW);
+    return;
   }
 
   digitalWrite(LED_BUILTIN, HIGH);
