@@ -2,6 +2,9 @@
 
 Notes, calibration steps, and build logs for the Otto DIY robot.
 
+## Calibration guide
+- See `docs/CALIBRATE.md`.
+
 ## Hardware notes
 - Board: Nano mini v3
 - Shield: V3.0 I/O Expansion Breakout Sensor Module Board for Nano
