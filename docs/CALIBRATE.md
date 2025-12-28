@@ -19,7 +19,7 @@ This uses the OttoDIY calibration example and saves trims into EEPROM.
 
 Steps:
 1. In Arduino IDE, open:
-   File > Examples > OttoDIYLib > Otto_CalibrationWalk
+   `arduino/otto_calibrate/otto_calibrate.ino`
 2. Update the pins to match this project:
    - Left leg: 2
    - Right leg: 3
@@ -29,7 +29,8 @@ Steps:
 3. Upload to the Nano.
 4. Open Serial Monitor at 9600.
 5. Use the keys printed in the sketch to adjust trims.
-6. The sketch saves trims in EEPROM.
+6. Press `p` to print the current trims.
+7. The sketch saves trims in EEPROM after each change.
 
 After calibration:
 - To use EEPROM trims in this repo, set `load_calibration` to `true` in
