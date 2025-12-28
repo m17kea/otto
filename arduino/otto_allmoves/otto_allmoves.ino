@@ -1,6 +1,7 @@
 //----------------------------------------------------------------
 // Otto All Moves demo (adapted for this repo's wiring).
 //----------------------------------------------------------------
+#include <Arduino.h>
 #include <Otto.h>
 
 Otto ottoBot;
