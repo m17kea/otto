@@ -11,5 +11,15 @@
   "files.watcherExclude": {
     ".pio/**": true
   },
-  "C_Cpp.default.configurationProvider": "platformio.platformio-ide"
+  "C_Cpp.default.configurationProvider": "platformio.platformio-ide",
+  "C_Cpp.default.includePath": [
+    "${workspaceFolder}/**",
+    "${workspaceFolder}/.pio/libdeps/**",
+    "${workspaceFolder}/.pio/packages/**"
+  ],
+  "C_Cpp.default.browse.path": [
+    "${workspaceFolder}/**",
+    "${workspaceFolder}/.pio/libdeps/**",
+    "${workspaceFolder}/.pio/packages/**"
+  ]
 }
