@@ -2,6 +2,7 @@
   "recommendations": [
     "platformio.platformio-ide",
     "ms-vscode.cpptools",
-    "ms-vscode.vscode-serial-monitor"
+    "ms-vscode.vscode-serial-monitor",
+    "moshfeu.vscode-3d-preview"
   ]
 }
