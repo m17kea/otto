@@ -1,0 +1,15 @@
+{
+  "files.associations": {
+    "*.ino": "cpp"
+  },
+  "files.exclude": {
+    ".pio": true
+  },
+  "search.exclude": {
+    ".pio": true
+  },
+  "files.watcherExclude": {
+    ".pio/**": true
+  },
+  "C_Cpp.default.configurationProvider": "platformio.platformio-ide"
+}
