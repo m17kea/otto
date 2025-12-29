@@ -1,8 +1,11 @@
 {
-  "recommendations": [
-    "platformio.platformio-ide",
-    "ms-vscode.cpptools",
-    "ms-vscode.vscode-serial-monitor",
-    "moshfeu.vscode-3d-preview"
-  ]
+    // See http://go.microsoft.com/fwlink/?LinkId=827846
+    // for the documentation about the extensions.json format
+    "recommendations": [
+        "moshfeu.vscode-3d-preview",
+        "ms-vscode.cpptools",
+        "ms-vscode.cpptools-extension-pack",
+        "ms-vscode.vscode-serial-monitor",
+        "platformio.platformio-ide"
+    ]
 }
