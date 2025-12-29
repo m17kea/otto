@@ -20,12 +20,25 @@ Code and notes for building and programming the Otto DIY robot.
 - `nanoatmega328new`: main sketch, new bootloader
 - `nano_calibrate`: calibration sketch, old bootloader (9600 baud)
 - `nano_calibrate_new`: calibration sketch, new bootloader (9600 baud)
-- `nano_allmoves`: all-moves demo, old bootloader
-- `nano_allmoves_new`: all-moves demo, new bootloader
+- Example sketches use `nano_<example>` (old bootloader) and
+  `nano_<example>_new` (new bootloader).
 
-### Otto all-moves demo
-- Arduino sketch: `arduino/otto_allmoves/otto_allmoves.ino`
-- Uses the 8x8 LED matrix on A3/A2/A1 if installed.
+### OttoDIY example sketches (adapted)
+Arduino sketches live in `arduino/` with matching PlatformIO envs:
+- `otto_allmoves` (8x8 LED matrix on A3/A2/A1 if installed)
+- `otto_app`
+- `otto_avoid`
+- `otto_calibrationwalk`
+- `otto_happybirthday`
+- `otto_photoresistor_test`
+- `otto_singleladies`
+- `otto_smoothcriminal`
+- `otto_testsensor`
+- `otto_touchmodes`
+
+Adaptations:
+- Servo pins: 2/3/4/5, buzzer: 12, ultrasonic: 8/9.
+- `otto_app` moves Bluetooth serial to pins 11/7 to avoid the buzzer pin.
 
 ## Libraries
 - PlatformIO pulls the OttoDIY library via `lib_deps` in `platformio.ini`.
