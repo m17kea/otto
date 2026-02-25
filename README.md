@@ -53,6 +53,18 @@ Adaptations:
 - Servo pins: 2/3/4/5, buzzer: 12, ultrasonic: 8/9.
 - `otto_app` moves Bluetooth serial to pins 11/7 to avoid the buzzer pin.
 
+## Hardware config source
+- Pin map, trims, and movement constants are centralized in
+  `include/otto_robot_config.h`.
+- `src/main.cpp`, `arduino/otto.ino`, and `arduino/otto_avoid/otto_avoid.ino`
+  all consume this shared config.
+
+## Current known-good trims
+- Left hip (LL): `18`
+- Right hip (RL): `-23`
+- Left foot (LF): `0`
+- Right foot (RF): `-10`
+
 ## Libraries
 - PlatformIO pulls the OttoDIY library via `lib_deps` in `platformio.ini`.
 - Arduino IDE: install `OttoDIYLib` from Library Manager or from https://github.com/OttoDIY/OttoDIYLib
