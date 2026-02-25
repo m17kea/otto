@@ -32,6 +32,15 @@ Steps:
 6. Press `p` to print the current trims.
 7. The sketch saves trims in EEPROM after each change.
 
+Key map:
+- `a` / `z`: left leg plus / minus
+- `s` / `x`: left foot plus / minus
+- `k` / `m`: right leg plus / minus
+- `j` / `n`: right foot plus / minus
+- `f`: test walk
+- `h`: return home
+- `p`: print trims
+
 ### Run without Arduino IDE (PlatformIO CLI)
 Prereqs:
 - Install PlatformIO CLI (for example, `brew install platformio`).
@@ -51,6 +60,12 @@ Troubleshooting:
 - Close any serial monitor before uploading; open ports can cause sync errors.
 - Garbled serial output means the baud rate is wrong (calibration uses 9600).
 - CH340 ports usually show up as `/dev/cu.wchusbserial*` on macOS.
+
+If a trim changes sign dramatically between sessions (for example, right hip
+from negative to positive), check mechanics before trusting the number:
+- Servo horn was re-seated on a different spline index (or 180 degrees off)
+- Servo orientation was flipped during reassembly
+- Left/right servo wiring was swapped (D2 vs D3)
 
 After calibration:
 - To use EEPROM trims in this repo, set `load_calibration` to `true` in

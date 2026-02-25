@@ -15,6 +15,22 @@ Code and notes for building and programming the Otto DIY robot.
    - `pio run`
    - `pio run -t upload`
 
+### Quick field workflow (macOS + CH340)
+1. Find the active Nano port:
+   - `ls /dev/cu.*`
+2. Upload the main sketch:
+   - `pio run -e nanoatmega328new -t upload --upload-port <PORT>`
+3. Upload obstacle avoid:
+   - `pio run -e nano_avoid_new -t upload --upload-port <PORT>`
+4. Upload calibration sketch:
+   - `pio run -e nano_calibrate_new -t upload --upload-port <PORT>`
+5. Open serial monitor:
+   - Main/avoid: `pio device monitor -b 115200 -p <PORT>`
+   - Calibration: `pio device monitor -b 9600 -p <PORT>`
+
+If upload fails, close any serial monitor first, then re-check the port with
+`ls /dev/cu.*` and retry.
+
 ### PlatformIO environments
 - `nanoatmega328new`: main sketch (new bootloader)
 - `nano_calibrate_new`: calibration sketch (9600 baud)

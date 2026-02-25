@@ -1,0 +1,4 @@
+interface:
+  display_name: "Otto Flash Calibrate"
+  short_description: "Upload Otto sketches and run calibration safely"
+  default_prompt: "Use the Otto flash workflow to detect the active port, upload the requested sketch, and handle calibration trim updates."
