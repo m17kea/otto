@@ -42,8 +42,6 @@ Prereqs:
 
 1. Plug in the Nano and note its serial port (for example, `/dev/tty.usbserial-*`).
 2. Upload the calibration sketch:
-   `pio run -e nano_calibrate -t upload --upload-port <PORT>`
-   If you see sync errors, try the new bootloader env:
    `pio run -e nano_calibrate_new -t upload --upload-port <PORT>`
 3. Open a serial monitor at 9600:
    `pio device monitor -b 9600 -p <PORT>`

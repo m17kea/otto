@@ -16,12 +16,9 @@ Code and notes for building and programming the Otto DIY robot.
    - `pio run -t upload`
 
 ### PlatformIO environments
-- `nanoatmega328`: main sketch, old bootloader
-- `nanoatmega328new`: main sketch, new bootloader
-- `nano_calibrate`: calibration sketch, old bootloader (9600 baud)
-- `nano_calibrate_new`: calibration sketch, new bootloader (9600 baud)
-- Example sketches use `nano_<example>` (old bootloader) and
-  `nano_<example>_new` (new bootloader).
+- `nanoatmega328new`: main sketch (new bootloader)
+- `nano_calibrate_new`: calibration sketch (9600 baud)
+- Example sketches use `nano_<example>_new`.
 
 ### OttoDIY example sketches (adapted)
 Arduino sketches live in `arduino/` with matching PlatformIO envs:

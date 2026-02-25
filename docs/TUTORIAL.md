@@ -78,8 +78,7 @@ Power note:
 PlatformIO (recommended):
 1. Install PlatformIO CLI: `brew install platformio`
 2. Connect the Nano and note the port (macOS example: `/dev/cu.wchusbserial*`).
-3. Build/upload (old or new bootloader):
-   - `pio run -e nanoatmega328 -t upload --upload-port <PORT>`
+3. Build/upload (new bootloader):
    - `pio run -e nanoatmega328new -t upload --upload-port <PORT>`
 
 macOS CH340 driver (Nano clones):
@@ -94,8 +93,7 @@ Serial monitor:
 ## 6) Calibration
 
 Run the calibration sketch:
-- Old bootloader: `pio run -e nano_calibrate -t upload --upload-port <PORT>`
-- New bootloader: `pio run -e nano_calibrate_new -t upload --upload-port <PORT>`
+- `pio run -e nano_calibrate_new -t upload --upload-port <PORT>`
 
 Use the keys shown in the serial monitor to adjust trims.
 The final values can be used two ways:
@@ -107,7 +105,7 @@ Details: `docs/CALIBRATE.md`
 ## 7) Example sketches
 
 All OttoDIYLib examples are included and wired for this build. Each has
-PlatformIO envs `nano_<example>` and `nano_<example>_new`.
+PlatformIO envs `nano_<example>_new`.
 
 Examples:
 - `otto_allmoves` (uses LED matrix if installed)
@@ -146,7 +144,6 @@ workflow:
 If uploads fail with sync errors:
 - Close any serial monitor.
 - Replug the board or press reset.
-- Try the other bootloader env.
 
 ## 9) Troubleshooting quick hits
 

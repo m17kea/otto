@@ -60,26 +60,5 @@ void setup() {
 }
 
 void loop() {
-  static unsigned long lastMoveMs = 0;
-
-  if (millis() - lastMoveMs < MOVE_INTERVAL_MS) {
-    return;
-  }
-  lastMoveMs = millis();
-
-  long distance = readUltrasonicCm();
-  Serial.print("Ultrasonic (cm): ");
-  Serial.println(distance);
-
-  if (distance > 0 && distance < OBSTACLE_STOP_CM) {
-    digitalWrite(LED_BUILTIN, HIGH);
-    ottoBot.sing(S_surprise);
-    ottoBot.turn(1, 900, RIGHT);
-    digitalWrite(LED_BUILTIN, LOW);
-    return;
-  }
-
-  digitalWrite(LED_BUILTIN, HIGH);
-  ottoBot.walk(1, 900, FORWARD);
-  digitalWrite(LED_BUILTIN, LOW);
+  delay(1000);
 }
