@@ -1,48 +1,90 @@
 #include <Arduino.h>
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Otto avoid obstacles with ultrasonic sensor sample sketch code
-//-- Otto DIY invests time and resources providing open source code and hardware, 
+//-- Otto DIY invests time and resources providing open source code and hardware,
 //-- please support by purchasing kits from https://www.ottodiy.com/
 //-- Make sure to have installed all libraries: https://github.com/OttoDIY/OttoDIYLib
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #include <Otto.h>
 Otto ottoBot;  //This is Otto!
 //----------------------------------------------------------------------
-#define LeftLeg 2 
-#define RightLeg 3
-#define LeftFoot 4 
-#define RightFoot 5 
-#define Buzzer  12 
-#define Trigger 8 // ultrasonic sensor trigger pin
-#define Echo 9 // ultrasonic sensor echo pin
+constexpr uint8_t SERVO_LEFT_HIP_PIN = 2;
+constexpr uint8_t SERVO_RIGHT_HIP_PIN = 3;
+constexpr uint8_t SERVO_LEFT_FOOT_PIN = 4;
+constexpr uint8_t SERVO_RIGHT_FOOT_PIN = 5;
+constexpr uint8_t ULTRASONIC_TRIG_PIN = 8;
+constexpr uint8_t ULTRASONIC_ECHO_PIN = 9;
+constexpr uint8_t BUZZER_PIN = 12;
 
-long ultrasound() {
-   long duration, distance;
-   digitalWrite(Trigger,LOW);
-   delayMicroseconds(2);
-   digitalWrite(Trigger, HIGH);
-   delayMicroseconds(10);
-   digitalWrite(Trigger, LOW);
-   duration = pulseIn(Echo, HIGH);
-   distance = duration/58;
-   return distance;
+constexpr int TRIM_LEFT_HIP = 18;
+constexpr int TRIM_RIGHT_HIP = -23;
+constexpr int TRIM_LEFT_FOOT = 0;
+constexpr int TRIM_RIGHT_FOOT = -10;
+
+constexpr long OBSTACLE_STOP_CM = 15;
+constexpr unsigned long MOVE_INTERVAL_MS = 1600;
+
+long readUltrasonicCm() {
+  digitalWrite(ULTRASONIC_TRIG_PIN, LOW);
+  delayMicroseconds(2);
+  digitalWrite(ULTRASONIC_TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(ULTRASONIC_TRIG_PIN, LOW);
+
+  long duration = pulseIn(ULTRASONIC_ECHO_PIN, HIGH, 30000);
+  if (duration == 0) {
+    return -1;
+  }
+  return duration / 58;
 }
 
+void applyServoTrims() {
+  ottoBot.setTrims(TRIM_LEFT_HIP, TRIM_RIGHT_HIP, TRIM_LEFT_FOOT,
+                   TRIM_RIGHT_FOOT);
+}
+
+void neutralPose() {
+  ottoBot.home();
+}
 
 void setup() {
-  ottoBot.init(LeftLeg, RightLeg, LeftFoot, RightFoot, true, Buzzer); //Set the servo pins and Buzzer pin
-  pinMode(Trigger, OUTPUT); 
-  pinMode(Echo, INPUT); 
+  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(ULTRASONIC_TRIG_PIN, OUTPUT);
+  pinMode(ULTRASONIC_ECHO_PIN, INPUT);
 
+  Serial.begin(115200);
+  delay(200);
+
+  ottoBot.init(SERVO_LEFT_HIP_PIN, SERVO_RIGHT_HIP_PIN, SERVO_LEFT_FOOT_PIN,
+               SERVO_RIGHT_FOOT_PIN, false, BUZZER_PIN);
+  applyServoTrims();
+  neutralPose();
+  ottoBot.sing(S_connection);
+
+  Serial.println("Otto avoid starting...");
 }
 
 void loop() {
-    if (ultrasound() <= 15) {
-      ottoBot.sing(S_surprise);
-      ottoBot.playGesture(OttoConfused);
-      ottoBot.walk(2,1000,-1); // BACKWARD x2
-      ottoBot.turn(3,1000,1); // LEFT x3
-    }
-    ottoBot.walk(1,1000,1); // FORWARD x1
+  static unsigned long lastMoveMs = 0;
 
+  if (millis() - lastMoveMs < MOVE_INTERVAL_MS) {
+    return;
+  }
+  lastMoveMs = millis();
+
+  long distance = readUltrasonicCm();
+  Serial.print("Ultrasonic (cm): ");
+  Serial.println(distance);
+
+  if (distance > 0 && distance < OBSTACLE_STOP_CM) {
+    digitalWrite(LED_BUILTIN, HIGH);
+    ottoBot.sing(S_surprise);
+    ottoBot.turn(1, 900, RIGHT);
+    digitalWrite(LED_BUILTIN, LOW);
+    return;
+  }
+
+  digitalWrite(LED_BUILTIN, HIGH);
+  ottoBot.walk(1, 900, FORWARD);
+  digitalWrite(LED_BUILTIN, LOW);
 }
