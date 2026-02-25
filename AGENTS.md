@@ -17,5 +17,12 @@
 - If upload fails, first close any serial monitor and retry once after
   re-running `ls /dev/cu.*`.
 - Keep trim constants synchronized in both files:
-  - `src/main.cpp`
-  - `arduino/otto_avoid/otto_avoid.ino`
+  - `include/otto_robot_config.h`
+
+## Firmware pre-commit check
+
+- Before committing changes to Otto firmware (`src/*.cpp`, `arduino/*.ino`, or
+  `include/otto_robot_config.h`), run:
+  - `pio run -e nanoatmega328new`
+- If obstacle-avoid behavior was changed, also run:
+  - `pio run -e nano_avoid_new`

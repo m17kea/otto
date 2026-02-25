@@ -9,7 +9,7 @@ description: Use when working in the Otto robot repo to upload main/avoid/calibr
 
 This skill provides a repeatable upload and calibration workflow for Otto on a
 Nano ATmega328 new bootloader. It minimizes failed uploads and trim drift
-between `src/main.cpp` and `arduino/otto_avoid/otto_avoid.ino`.
+across firmware by writing trims to `include/otto_robot_config.h`.
 
 ## Trigger phrases
 
@@ -39,14 +39,20 @@ Use this skill when the user asks to:
    - Open monitor: `pio device monitor -b 9600 -p <PORT>`
    - Use keys: `a/z`, `s/x`, `k/m`, `j/n`, `f`, `h`, `p`
    - Capture `Trims (LL, RL, LF, RF)` values.
-6. When updating fixed trims, keep both files aligned:
-   - `src/main.cpp`
-   - `arduino/otto_avoid/otto_avoid.ino`
+6. Sync fixed trims from the printed line:
+   - `skills/otto-flash-calibrate/scripts/sync-trims.sh "Trims (LL, RL, LF, RF): <LL>, <RL>, <LF>, <RF>"`
+7. Verify the shared config diff:
+   - `git diff -- include/otto_robot_config.h`
+8. Quick compile check when firmware files changed:
+   - `pio run -e nanoatmega328new`
+   - `pio run -e nano_avoid_new` (if avoid flow changed)
 
 ## Notes
 
 - If the user says "upload main" or "upload avoid," run the upload directly.
 - If the user says "recalibrate," upload calibration first and then provide the
   key map at 9600 baud.
+- Prefer updating `include/otto_robot_config.h` over editing trim constants in
+  individual sketches.
 - If behavior is circling or drifting, verify trim signs and confirm servo/pin
   mapping before changing gait logic.

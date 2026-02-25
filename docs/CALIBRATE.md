@@ -14,6 +14,12 @@ Notes:
 - If a positive trim makes it worse, flip the sign.
 - The final values are the offsets to keep.
 
+## Current known-good trims
+- Left leg (LL): `18`
+- Right leg (RL): `-23`
+- Left foot (LF): `0`
+- Right foot (RF): `-10`
+
 ## OttoDIY calibration sketch (recommended)
 This uses the OttoDIY calibration example and saves trims into EEPROM.
 
@@ -40,6 +46,17 @@ Key map:
 - `f`: test walk
 - `h`: return home
 - `p`: print trims
+
+## Sync trims into firmware constants
+All runtime firmware reads trim values from:
+- `include/otto_robot_config.h`
+
+Use the skill helper script with the printed serial line:
+- `skills/otto-flash-calibrate/scripts/sync-trims.sh "Trims (LL, RL, LF, RF): 18, -23, 0, -10"`
+
+Then run a quick compile check:
+- `pio run -e nanoatmega328new`
+- `pio run -e nano_avoid_new`
 
 ### Run without Arduino IDE (PlatformIO CLI)
 Prereqs:
