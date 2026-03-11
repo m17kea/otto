@@ -213,7 +213,7 @@ Typical serial naming:
 ## Public Workshop Site
 
 A companion public workshop site can be built from the sibling project at
-`../otto-site` and published to `otto.armitage.cloud`.
+`../learnai-site` and published to `learnai.armitage.cloud`.
 
 That site is intended to give children, parents, and teachers:
 - a friendly introduction to Otto
