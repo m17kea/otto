@@ -23,6 +23,7 @@ If you are an AI agent:
 4. If anything important differs, calibrate before trusting motion demos.
 
 Useful docs:
+- Build guide: [`docs/BUILD.md`](docs/BUILD.md)
 - Classroom guide: [`docs/CLASSROOM.md`](docs/CLASSROOM.md)
 - Full build tutorial: [`docs/TUTORIAL.md`](docs/TUTORIAL.md)
 - Calibration guide: [`docs/CALIBRATE.md`](docs/CALIBRATE.md)

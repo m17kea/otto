@@ -3,39 +3,43 @@
 This tutorial covers the full build from printed parts to firmware setup, plus
 instructions to use a code agent to build and upload sketches.
 
+The canonical build reference is now [`docs/BUILD.md`](BUILD.md). Use that
+guide for:
+- the recommended classroom build
+- exact STL links
+- required and optional components
+- example Amazon UK and AliExpress buying links
+
 ## 1) Parts list
 
-Electronics (core):
-- Arduino Nano (ATmega328P, 5V, 16 MHz)
-- 4x micro servos (SG90 or MG90S)
-- Ultrasonic sensor (HC-SR04)
-- Active buzzer (5V)
-- Nano I/O expansion shield (optional but convenient)
-- Power: 5V supply or battery pack (and a power switch)
-- Wires / jumper leads
+For the full bill of materials and shopping links, see [`docs/BUILD.md`](BUILD.md).
 
-Optional:
-- 8x8 LED matrix (MAX7219 module) for the mouth
-- Bluetooth module (for `otto_app`, uses SoftwareSerial)
-- Photoresistor + resistor (for `otto_photoresistor_test`)
-- Touch sensor (for `otto_touchmodes`)
+Short version for the baseline robot:
+- Arduino Nano (ATmega328P)
+- Nano shield style head build
+- 4x micro servos (SG90 or MG90S class)
+- HC-SR04 ultrasonic sensor
+- 5V active buzzer
+- stable 5V power setup
+- jumper wires
 
-Tools and consumables:
-- Small Phillips screwdriver
-- 3D printer + filament (PLA/ABS)
-- Double-sided tape / zip ties
+Useful optional add-ons:
+- MAX7219 8x8 LED matrix
+- Bluetooth module
+- photoresistor module
+- touch sensor module
 
 ## 2) Print the parts
 
-STLs are already in this repo:
-- Base robot parts: `hardware/printables/otto_diy/`
-- Humanoid expansion: `hardware/printables/otto_diy_humanoid/`
+The exact baseline STL list is documented in [`docs/BUILD.md`](BUILD.md).
 
-Pick a head that matches your electronics:
-- `ottodiyheadv13_nanoshield.stl` for Nano + I/O shield
-- Other head variants are in the same folder
+Short version:
+- base robot STLs live in `hardware/printables/otto_diy/`
+- humanoid expansion STLs live in `hardware/printables/otto_diy_humanoid/`
+- the recommended baseline head is `ottodiyheadv13_nanoshield.stl`
 
-Tip: print a spare servo horn and the power switch button.
+Tip: print a spare power button and confirm the body variant matches your power
+switch plan before printing.
 
 ## 3) Assemble the robot
 
